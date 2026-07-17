@@ -3,7 +3,7 @@ import yaml
 from pathlib import Path
 
 def get_chunk_articles(path):
-    df = pd.read_parquet(path)
+    df = pd.read_parquet('../' + path)
     return dict(zip(df['chunk_id'].astype(str), df['article_id'].astype(str)))
 
 

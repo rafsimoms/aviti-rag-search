@@ -6,6 +6,7 @@ import time
 from ranx import Qrels, Run, evaluate as ranx_evaluate
 import random
 import json
+from retrievers import BM25Retriever
 
 def load_config(path):
     return yaml.safe_load(Path(path).read_text())
@@ -47,7 +48,9 @@ class RandomRetriever:
 
 if __name__ == '__main__':
     config = load_config('../config.yaml')
-    article_ids = pd.read_parquet("../" + config['paths']['processed_articles'])['article_id'].astype(str).tolist()
-    rng = RandomRetriever(article_ids=article_ids)
-    evaluate_retriever(rng, '../' + config['paths']['calibration'])
+    df = pd.read_parquet("../" + config['paths']['processed_articles'])
+    retriever = BM25Retriever(config)
+    retriever.fit(df)  
+    retriever.save('../' + config['paths']['bm25_index'])
+    evaluate_retriever(retriever, '../' + config['paths']['calibration'])
 
