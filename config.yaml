@@ -18,4 +18,4 @@ paths:
   test: data/candidate_public/candidate_data/test.f
   reports: reports/reports.md
   calibration: data/queries.jsonl
-
+  processed_articles: data/processed.parquet
