@@ -1,0 +1,21 @@
+chunking:
+  chunk_size: 300
+  chunk_overlap: 50
+
+models:
+  embedding: intfloat/multilingual-e5-large
+  reranker: BAAI/bge-reranker-v2-m3
+
+search:
+  top_k: 10
+  rerank_candidates: 50
+  rrf_k: 60
+  aggregation: max
+
+paths:
+  raw: data/candidate_public/candidate_data/articles.f
+  calibration_raw: data/candidate_public/candidate_data/calibration.f
+  test: data/candidate_public/candidate_data/test.f
+  reports: reports/reports.md
+  calibration: data/queries.jsonl
+
