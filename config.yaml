@@ -5,7 +5,8 @@ chunking:
 models:
   embedding: intfloat/multilingual-e5-large
   reranker: BAAI/bge-reranker-v2-m3
-
+  batch_size: 32
+  
 search:
   top_k: 10
   rerank_candidates: 50
@@ -22,3 +23,5 @@ paths:
   calibration: data/queries.jsonl
   processed_articles: data/processed.parquet
   bm25_index: indexes/bm25.pkl
+  dense_index: indexes/
+
