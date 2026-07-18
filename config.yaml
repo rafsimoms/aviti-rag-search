@@ -24,4 +24,5 @@ paths:
   bm25_index: indexes/bm25.pkl
   dense_index: indexes/dense.pkl
   logs: logs/logs.txt
+  answer: data/answer.csv
 

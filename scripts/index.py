@@ -19,7 +19,7 @@ def build_dense(config, df):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--retriever', required=True, choices=['bm25', 'dence', 'all'])
+    parser.add_argument('--retriever', required=True, choices=['bm25', 'dense', 'all'])
     args = parser.parse_args()
     config = load_config('../config.yaml')
     df = pd.read_parquet('../' + config['paths']['processed_articles'])
@@ -33,4 +33,4 @@ def main():
     
 if __name__ == '__main__':
     main()
-    
+
