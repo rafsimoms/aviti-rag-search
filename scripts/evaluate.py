@@ -6,7 +6,8 @@ import time
 from ranx import Qrels, Run, evaluate as ranx_evaluate
 import random
 import json
-from retrievers import BM25Retriever, DenseRetriever, HybridRetriever
+from retrievers import BM25Retriever, DenseRetriever, HybridRetriever, RerankRetriever
+from tqdm.auto import tqdm
 
 def load_config(path):
     return yaml.safe_load(Path(path).read_text())
@@ -24,7 +25,7 @@ def evaluate_retriever(retriever, path):
     qrels = {}
     run = {}
     latencies = []
-    for line in data:
+    for line in tqdm(data, desc='eval'):
         qrels[line['query_id']] = {str(art_id): 1 for art_id in line['ground_truth']}
         t0 = time.perf_counter()
         results = retriever.search(line["query_text"])
@@ -47,4 +48,6 @@ if __name__ == "__main__":
     dense.load(Path("../" + config["paths"]["dense_index"]))
 
     hybrid = HybridRetriever(config, [bm25, dense])
-    evaluate_retriever(hybrid, "../" + config["paths"]["calibration"])
+    reranked = RerankRetriever(config, hybrid)
+
+    evaluate_retriever(reranked, "../" + config["paths"]["calibration"])

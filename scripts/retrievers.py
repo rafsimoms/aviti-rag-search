@@ -5,10 +5,11 @@ import pymorphy3
 from rank_bm25 import BM25Okapi
 import random
 from aggregate import get_chunk_articles, aggregate_scores
-from sentence_transformers import SentenceTransformer
+from sentence_transformers import SentenceTransformer, CrossEncoder
 import numpy as np
 import faiss
 from pathlib import Path
+
  
 morph = pymorphy3.MorphAnalyzer()
 lemma_cache = {}
@@ -157,7 +158,32 @@ class HybridRetriever(BaseRetriever):
                 fused[chunk_id] = fused.get(chunk_id, 0.0) + 1.0 / (self.rrf_k + rank)
         pairs = sorted(fused.items(), key=lambda x: x[1], reverse=True)
         return pairs[:self.candidate_chunks]
+
+class RerankRetriever(BaseRetriever):
+    def __init__(self, config, base_retriever):
+        super().__init__(config)
+        self.base_retirver = base_retriever
+        self.batch_size = config['models']['batch_size']
+        self.model_name = config['models']['reranker']
+        self.rerank_candidates = config['search']['rerank_candidates']
+        df = pd.read_parquet('../' + config['paths']['processed_articles'])
+        self.chunk_texts = dict(zip(df['chunk_id'].astype(str), df['chunk']))
+        self._model = None
+
+    @property
+    def model(self):
+        if self._model is None:
+            self._model = CrossEncoder(self.model_name)
+        return self._model
     
+    def _search_chunks(self, query):
+        candidates = self.base_retirver._search_chunks(query)[:self.rerank_candidates]
+        pairs = [(query, self.chunk_texts[chunk_id]) for chunk_id, score in candidates]
+        scores = self.model.predict(pairs, batch_size=self.batch_size)
+        reranked = [(chunk_id, float(score)) for (chunk_id, rernker_score), score in zip(candidates, scores)]
+        reranked.sort(key=lambda x: x[1], reverse=True)
+        return reranked
+
 
 
 
