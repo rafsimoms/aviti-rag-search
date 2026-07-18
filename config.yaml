@@ -16,13 +16,12 @@ search:
   candidate_chunks: 100
 
 paths:
-  raw: data/candidate_public/candidate_data/articles.f
-  calibration_raw: data/candidate_public/candidate_data/calibration.f
-  test: data/candidate_public/candidate_data/test.f
-  reports: reports/reports.md
+  raw: data/candidate_public/articles.f
+  calibration_raw: data/candidate_public/calibration.f
+  test: data/candidate_public/test.f
   calibration: data/queries.jsonl
   processed_articles: data/processed.parquet
   bm25_index: indexes/bm25.pkl
-  dense_index: indexes/
+  dense_index: indexes/dense.pkl
   logs: logs/logs.txt
 

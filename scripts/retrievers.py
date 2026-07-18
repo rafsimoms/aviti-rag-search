@@ -124,15 +124,18 @@ class DenseRetriever(BaseRetriever):
         ]
     
     def save(self, path):
-        path = Path(path)
-        path.mkdir(parents=True, exist_ok=True)
-        faiss.write_index(self.index, str(path / "dense.faiss"))
-        pd.DataFrame({"chunk_id": self.chunk_ids}).to_parquet(path / "dense_mapping.parquet")
+        state = {
+            "index": faiss.serialize_index(self.index),
+            "chunk_ids": self.chunk_ids,
+        }
+        with open(path, "wb") as f:
+            pickle.dump(state, f)
  
     def load(self, path):
-        path = Path(path)
-        self.index = faiss.read_index(str(path / "dense.faiss"))
-        self.chunk_ids = pd.read_parquet(path / "dense_mapping.parquet")["chunk_id"].tolist()
+        with open(path, "rb") as f:
+            state = pickle.load(f)
+        self.index = faiss.deserialize_index(state["index"])
+        self.chunk_ids = state["chunk_ids"]
         return self
         
 
@@ -173,7 +176,7 @@ class RerankRetriever(BaseRetriever):
     @property
     def model(self):
         if self._model is None:
-            self._model = CrossEncoder(self.model_name)
+            self._model = CrossEncoder(self.model_name, max_length=384)
         return self._model
     
     def _search_chunks(self, query):
