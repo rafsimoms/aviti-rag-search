@@ -106,7 +106,7 @@ class DenseRetriever(BaseRetriever):
         
     def fit(self, df):
         df = df.reset_index(drop=True)
-        self.chunk_ids = df["chunk_id"].tolist()
+        self.chunk_ids = df["chunk_id"].astype(str).tolist()
         embeddings = self._encode(df["chunk"].tolist(), self.passage_prefix, show_progress=True)
         self.index = faiss.IndexFlatIP(embeddings.shape[1])
         self.index.add(embeddings)
@@ -136,7 +136,31 @@ class DenseRetriever(BaseRetriever):
         
 
         
-            
+class HybridRetriever(BaseRetriever):
+
+    def __init__(self, config, retrievers):
+        super().__init__(config)
+        self.retrievers = retrievers
+        self.rrf_k = config["search"]["rrf_k"]
+        self.candidate_chunks = config["search"]["candidate_chunks"]
+
+    def fit(self, df):
+        for retriever in self.retrievers:
+            retriever.fit(df)
+        return self
+    
+    def _search_chunks(self, query):
+        fused = {}
+        for retriever in self.retrievers:
+            ranked = retriever._search_chunks(query)
+            for rank, (chunk_id, _score) in enumerate(ranked, start=1):
+                fused[chunk_id] = fused.get(chunk_id, 0.0) + 1.0 / (self.rrf_k + rank)
+        pairs = sorted(fused.items(), key=lambda x: x[1], reverse=True)
+        return pairs[:self.candidate_chunks]
+    
+
+
+
 
 
 

@@ -6,7 +6,7 @@ import time
 from ranx import Qrels, Run, evaluate as ranx_evaluate
 import random
 import json
-from retrievers import BM25Retriever, DenseRetriever
+from retrievers import BM25Retriever, DenseRetriever, HybridRetriever
 
 def load_config(path):
     return yaml.safe_load(Path(path).read_text())
@@ -37,18 +37,14 @@ def evaluate_retriever(retriever, path):
     print(f"map10: {map_at_10}, latency: {avg_latency_ms}")
     return map_at_10
     
-
 if __name__ == "__main__":
     config = load_config("../config.yaml")
-    index_path = Path("../" + config["paths"]["dense_index"])
 
-    retriever = DenseRetriever(config)
-    if (index_path / "dense.faiss").exists():
-        retriever.load(index_path)
-    else:
-        df = pd.read_parquet("../" + config["paths"]["processed_articles"])
-        retriever.fit(df)
-        retriever.save(index_path)
+    bm25 = BM25Retriever(config)
+    bm25.load("../" + config["paths"]["bm25_index"])
 
-    evaluate_retriever(retriever, "../" + config["paths"]["calibration"])
+    dense = DenseRetriever(config)
+    dense.load(Path("../" + config["paths"]["dense_index"]))
 
+    hybrid = HybridRetriever(config, [bm25, dense])
+    evaluate_retriever(hybrid, "../" + config["paths"]["calibration"])
