@@ -12,7 +12,7 @@ search:
   rerank_candidates: 50
   rrf_k: 60
   aggregation: max
-  agg_top_k: 3           
+  agg_top_k: 3        
   candidate_chunks: 100 
 
 paths:
@@ -24,4 +24,5 @@ paths:
   processed_articles: data/processed.parquet
   bm25_index: indexes/bm25.pkl
   dense_index: indexes/
+  logs: logs/logs.txt
 
