@@ -42,7 +42,7 @@ def evaluate_retriever(retriever, path):
 
 def build_retriver(name, config):
     if name == 'random':
-        df = pd.read_parquet('../' + config['paths']['processed_acricles'])['erticle_id'].astype(str).tolist()
+        df = pd.read_parquet('../' + config['paths']['processed_articles'])['article_id'].astype(str).tolist()
         r = RandomRetriever(article_ids=df, top_k=config['search']['top_k'])
         return r
     if name == 'bm25':

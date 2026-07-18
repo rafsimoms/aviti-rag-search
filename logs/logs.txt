@@ -148,3 +148,48 @@ aggregation: max
 agg_top_k: 3
 candidate_chunks: 100
 ============================================================
+============================================================
+time: 2026-07-18T18:20:22
+retriever_name: hybrid
+map@10: 0.4179805555555556
+latency: 195.84340966594027
+chunk_size: 300
+overlap: 50
+search cfg: 
+top_k: 10
+rerank_candidates: 50
+rrf_k: 30
+aggregation: max
+agg_top_k: 3
+candidate_chunks: 100
+============================================================
+============================================================
+time: 2026-07-18T18:22:43
+retriever_name: hybrid
+map@10: 0.4183956349206349
+latency: 198.17643460608087
+chunk_size: 300
+overlap: 50
+search cfg: 
+top_k: 10
+rerank_candidates: 50
+rrf_k: 30
+aggregation: max
+agg_top_k: 3
+candidate_chunks: 200
+============================================================
+============================================================
+time: 2026-07-18T18:27:55
+retriever_name: random
+map@10: 0.009958333333333333
+latency: 0.0035937159700552
+chunk_size: 300
+overlap: 50
+search cfg: 
+top_k: 10
+rerank_candidates: 50
+rrf_k: 30
+aggregation: max
+agg_top_k: 3
+candidate_chunks: 100
+============================================================

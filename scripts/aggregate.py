@@ -9,8 +9,8 @@ def get_chunk_articles(path):
 
 def aggregate_scores(chunk_scores, chunk_articles, mode, top_k):
     per_article = {}
-    for chink_id, score in chunk_scores:
-        article_id = chunk_articles[chink_id]
+    for chunk_id, score in chunk_scores:
+        article_id = chunk_articles[chunk_id]
         if article_id not in per_article:
             per_article[article_id] = []
         per_article[article_id].append(score)

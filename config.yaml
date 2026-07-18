@@ -10,10 +10,10 @@ models:
 search:
   top_k: 10
   rerank_candidates: 50
-  rrf_k: 60
+  rrf_k: 30
   aggregation: max
   agg_top_k: 3        
-  candidate_chunks: 100 
+  candidate_chunks: 100
 
 paths:
   raw: data/candidate_public/candidate_data/articles.f
