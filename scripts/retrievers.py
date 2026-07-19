@@ -176,7 +176,8 @@ class RerankRetriever(BaseRetriever):
     @property
     def model(self):
         if self._model is None:
-            self._model = CrossEncoder(self.model_name, max_length=384)
+            self._model = CrossEncoder(self.model_name)
+            self._model.model.half()
         return self._model
     
     def _search_chunks(self, query):

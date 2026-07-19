@@ -193,3 +193,48 @@ aggregation: max
 agg_top_k: 3
 candidate_chunks: 100
 ============================================================
+============================================================
+time: 2026-07-19T01:50:10
+retriever_name: bm25
+map@10: 0.27143293650793654
+latency: 9.280075687594945
+chunk_size: 180
+overlap: 40
+search cfg: 
+top_k: 10
+rerank_candidates: 50
+rrf_k: 30
+aggregation: max
+agg_top_k: 3
+candidate_chunks: 100
+============================================================
+============================================================
+time: 2026-07-19T01:52:19
+retriever_name: bm25
+map@10: 0.2580789021164021
+latency: 4.47664648402133
+chunk_size: 400
+overlap: 75
+search cfg: 
+top_k: 10
+rerank_candidates: 50
+rrf_k: 30
+aggregation: max
+agg_top_k: 3
+candidate_chunks: 100
+============================================================
+============================================================
+time: 2026-07-19T02:28:46
+retriever_name: bm25
+map@10: 0.2900505291005291
+latency: 10.839656803946127
+chunk_size: 180
+overlap: 40
+search cfg: 
+top_k: 10
+rerank_candidates: 100
+rrf_k: 60
+aggregation: max
+agg_top_k: 3
+candidate_chunks: 250
+============================================================

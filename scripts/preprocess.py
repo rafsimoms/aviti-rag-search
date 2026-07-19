@@ -34,13 +34,14 @@ def run():
     rows = []
     for idx, row in data.iterrows():
         text = html_to_text(row['body'])
+        title = str(row['title']).strip()
         chunks = chunk_text(text, chunk_size=chunk_size, overlap=overlap)
         article_id = row['article_id']
         for i in range(len(chunks)):
             rows.append({
                 "article_id": article_id,
                 "chunk_id": f"{article_id}_{i + 1}",
-                "chunk": " ".join(chunks[i]),
+                "chunk": f"{title}. {" ".join(chunks[i])}",
                 "position": i + 1
             })
     df = pd.DataFrame(rows)

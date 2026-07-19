@@ -1,19 +1,19 @@
 chunking:
-  chunk_size: 300
-  chunk_overlap: 50
+  chunk_size: 180
+  chunk_overlap: 40
 
 models:
   embedding: intfloat/multilingual-e5-large
   reranker: BAAI/bge-reranker-v2-m3
-  batch_size: 32
+  batch_size: 64
   
 search:
   top_k: 10
-  rerank_candidates: 50
-  rrf_k: 30
+  rerank_candidates: 100
+  rrf_k: 60
   aggregation: max
   agg_top_k: 3        
-  candidate_chunks: 100
+  candidate_chunks: 250
 
 paths:
   raw: data/candidate_public/articles.f
